@@ -30,6 +30,51 @@ const iconStyles = [
 document.documentElement.style.scrollBehavior = "smooth";
 
 const Homepage = () => {
+  const projects = [
+    {
+      name: "Credit Score Management System",
+      description: (
+        <>
+          The Credit Score Management System is a web-based platform developed
+          using <span style={{ fontSize: "18px", color: "black" }}>React</span>{" "}
+          that allows both students and parents to track a student's academic
+          and non-academic performance. The system assigns credits based on
+          various parameters such as punctuality, task completion, and overall
+          discipline. Students can redeem their accumulated credits for exciting
+          rewards such as amusement park tickets, food coupons, and toys,
+          fostering motivation and engagement in their daily activities.,
+        </>
+      ),
+      features: [
+        "User Authentication & Role-Based Access",
+        "Performance Tracking & Credit Allocation",
+        "Reward System",
+        "Real-Time Dashboard & Reports",
+      ],
+    },
+    {
+      name: "Task Buddy",
+      description: (
+        <>
+          A responsive task management application using{" "}
+          <span style={{ fontSize: "18px", color: "black" }}> MERN </span>that
+          empowers users to efficiently create, organize, and track their tasks.
+          The application should feature user authentication via Firebase,
+          allowing users to sign in with Google. Users should be able to create,
+          edit, and delete tasks, categorize them (e.g., work, personal), and
+          set due dates. Additionally, implement drag-and-drop functionality for
+          task organization, sorting options based on due dates, and a
+          board/list view to enhance user experience.`,
+        </>
+      ),
+      features: [
+        "User Authentication[Firebase Google Provider]",
+        "Task Management",
+        "Filter and Search Options",
+        "Board/List View[Like Kanban]",
+      ],
+    },
+  ];
   return (
     <div
       style={{
@@ -363,17 +408,65 @@ const Homepage = () => {
             justifyContent="center"
             style={{ marginTop: "20px" }}
           >
-            {["Project 1", "Project 2"].map((project, index) => (
+            {projects.map((project, index) => (
               <Grid2 item xs={12} sm={6} key={index}>
                 <motion.div whileHover={{ scale: 1.05 }}>
-                  <Card className="shadow-lg" style={{ padding: "20px" }}>
+                  <Card
+                    className="shadow-lg"
+                    style={{
+                      padding: "20px",
+                      border: "1px solid #ddd",
+                      borderRadius: "8px",
+                      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                      marginBottom: "20px",
+                      width: "65%",
+                      height: "20rem",
+                      marginLeft: "15%",
+                    }}
+                  >
                     <CardContent>
-                      <Typography variant="h5" className="text-blue-600">
-                        {project}
+                      <Typography
+                        variant="h5"
+                        style={{
+                          color: "#1e3a8a", // Tailwind's text-blue-600 equivalent
+                          marginBottom: "10px",
+                          fontFamily: "Outfit",
+                        }}
+                      >
+                        {project.name}
                       </Typography>
-                      <Typography variant="body2" className="text-gray-700">
-                        Description of {project}.
+                      <Typography
+                        variant="body2"
+                        style={{
+                          color: "#4b5563", // Tailwind's text-gray-700 equivalent
+                          lineHeight: "1.6",
+                          fontFamily: "Outfit",
+                        }}
+                      >
+                        {project.description}
                       </Typography>
+                      <Typography
+                        variant="body2"
+                        style={{
+                          color: "#4b5563",
+                          marginTop: "10px",
+                          fontWeight: "bold",
+                          fontFamily: "Outfit",
+                        }}
+                      >
+                        Key Features:
+                      </Typography>
+                      <ul
+                        style={{
+                          paddingLeft: "20px",
+                          color: "#4b5563",
+                          fontFamily: "Outfit",
+                        }}
+                      >
+                        {project.features.map((feature, i) => (
+                          <li key={i}>{feature}</li>
+                        ))}
+                      </ul>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -402,8 +495,12 @@ const Homepage = () => {
         </Typography>
         <Container>
           <Typography
-            variant="body1"
-            style={{ marginTop: "20px", fontFamily: "Montserrat" }}
+            style={{
+              marginTop: "20px",
+              fontFamily: "Outfit",
+              fontSize: "22px",
+              color: "#1e3a8a",
+            }}
           >
             Receieved best innovation for project Vision based <br />
             parking slot detection based on Mask R-CNN for Engineering Final
