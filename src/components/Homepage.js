@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Card, CardContent, Grid2, Container } from "@mui/material";
 import {
   FaGithub,
@@ -10,26 +10,59 @@ import {
   FaCss3Alt,
   FaUser,
   FaLaptop,
+  FaBars,
+  FaTimes,
+  FaTrophy,
 } from "react-icons/fa";
-import { SiMongodb, SiExpress, SiPostman } from "react-icons/si";
+import {
+  SiMongodb,
+  SiExpress,
+  SiPostman,
+  // SiPowerbi,
+  SiTableau,
+  SiPython,
+  SiPandas,
+  SiNumpy,
+  SiScikitlearn,
+  SiMysql,
+} from "react-icons/si";
 import { motion } from "framer-motion";
 import "@fontsource/outfit";
 import "@fontsource/montserrat";
 import "./styles.css";
 
-const iconStyles = [
-  { Icon: SiMongodb, color: "#4DB33D" }, // MongoDB green
-  { Icon: SiExpress, color: "#000000" }, // Express black
-  { Icon: FaReact, color: "#61DBFB" }, // React blue
-  { Icon: FaNodeJs, color: "#3C873A" }, // Node.js green
-  { Icon: FaCss3Alt, color: "#264de4" }, // CSS blue
-  { Icon: SiPostman, color: "#FF6C37" }, // Postman orange
+const devSkillIcons = [
+  { Icon: SiMongodb, color: "#4DB33D" },
+  { Icon: SiExpress, color: "#000000" },
+  { Icon: FaReact, color: "#61DBFB" },
+  { Icon: FaNodeJs, color: "#3C873A" },
+  { Icon: FaCss3Alt, color: "#264de4" },
+  { Icon: SiPostman, color: "#FF6C37" },
+];
+
+const analyticsSkillIcons = [
+  // { Icon: SiPowerbi, color: "#F2C811" },
+  { Icon: SiTableau, color: "#E97627" },
+  { Icon: SiPython, color: "#3776AB" },
+  { Icon: SiPandas, color: "#150458" },
+  { Icon: SiNumpy, color: "#013243" },
+  { Icon: SiScikitlearn, color: "#F7931E" },
+  { Icon: SiMysql, color: "#00758F" },
 ];
 
 // Enable smooth scrolling
 document.documentElement.style.scrollBehavior = "smooth";
 
 const Homepage = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeHash, setActiveHash] = useState(typeof window !== "undefined" && window.location?.hash ? window.location.hash : "#about");
+  const closeMenu = () => setIsMenuOpen(false);
+  const navItems = [
+    { label: "About", href: "#about", Icon: FaUser },
+    { label: "Skills", href: "#skills", Icon: FaReact },
+    { label: "Projects", href: "#projects", Icon: FaLaptop },
+    { label: "Achievements", href: "#achievements", Icon: FaTrophy },
+  ];
   const projects = [
     {
       name: "Credit Score Management System",
@@ -76,203 +109,106 @@ const Homepage = () => {
     },
   ];
   return (
-    <div
-      style={{
-        background: "linear-gradient(to bottom, #F0DFD8, #DBAB97)",
-        minHeight: "100vh",
-        width: "100%",
-        overflowX: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      {/* Sidebar */}
-      <div
-        style={{
-          position: "fixed",
-          top: "0",
-          left: "0",
-          width: "200px",
-          height: "100vh",
-          backgroundColor: "transparent", // Semi-transparent
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          paddingTop: "20px",
-          marginTop: "5%",
-          marginLeft: "15px",
-          zIndex: 1000,
-        }}
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-b from-[#F5F0FF] to-[#EDE7FF] flex flex-col items-center">
+      {/* Top-right hamburger */}
+      <button
+        aria-label="Open menu"
+        onClick={() => setIsMenuOpen(true)}
+        className="fixed right-5 top-5 z-20 grid h-11 w-11 place-items-center rounded-lg bg-white/80 text-gray-800 shadow-sm ring-1 ring-black/5 backdrop-blur transition hover:bg-white"
       >
-        <a
-          href="#about"
-          style={{
-            marginBottom: "10px",
-            textDecoration: "none",
-            fontFamily: "Outfit",
-            fontWeight: 500,
-            fontSize: "32px",
-            color: "grey",
-          }}
-        >
-          About Me
-        </a>
-        <a
-          href="#skills"
-          style={{
-            marginBottom: "10px",
-            textDecoration: "none",
-            fontFamily: "Outfit",
-            fontWeight: 500,
-            fontSize: "32px",
-            color: "grey",
-          }}
-        >
-          Skills
-        </a>
-        <a
-          href="#projects"
-          style={{
-            marginBottom: "10px",
-            textDecoration: "none",
-            fontFamily: "Outfit",
-            fontWeight: 500,
-            fontSize: "32px",
-            color: "grey",
-          }}
-        >
-          Projects
-        </a>
-        <a
-          href="#achievements"
-          style={{
-            marginBottom: "10px",
-            textDecoration: "none",
-            fontFamily: "Outfit",
-            fontWeight: 500,
-            fontSize: "32px",
-            color: "grey",
-          }}
-        >
-          Achievements
-        </a>
-      </div>
+        <FaBars />
+      </button>
 
-      {/* Profile Image */}
-      <img
-        src="/my-image.png"
-        alt="Profile"
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "80px",
-          width: "160px",
-          height: "160px",
-          borderRadius: "50%",
-          objectFit: "cover",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-        }}
-      />
-
-      {/* Header Section */}
-      <motion.div
-        style={{
-          textAlign: "center",
-          paddingTop: "80px",
-          marginBottom: "50px",
-          marginLeft: "200px", // Adjust for sidebar
-        }}
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <Typography
-          style={{ fontFamily: "Outfit", fontSize: "3rem", fontWeight: 500 }}
-        >
-          Vinay Mansabdar
-        </Typography>
-        <Typography variant="h5" style={{ fontFamily: "Montserrat" }}>
-          FullStack Ninja 🥷
-        </Typography>
-
-        {/* Contact Links */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "2rem",
-            marginTop: "20px",
-            flexWrap: "wrap",
-          }}
-        >
-          <a
-            href="https://github.com/VinayMansa"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              textDecoration: "none",
-              color: "black",
-            }}
+      {/* Overlay Menu */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm" onClick={closeMenu}>
+          <motion.nav
+            initial={{ opacity: 0, x: 24, scale: 0.98 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            className="absolute right-5 top-5 w-72 rounded-2xl bg-white/95 p-5 shadow-2xl ring-1 ring-black/5 backdrop-blur"
+            onClick={(e) => e.stopPropagation()}
           >
-            <FaGithub size={25} style={{ marginRight: "8px" }} />
-            GitHub
-          </a>
-
-          <a
-            href="https://www.linkedin.com/in/vinay-mansabdar-874b38226"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              textDecoration: "none",
-              color: "black",
-            }}
-          >
-            <FaLinkedin
-              size={25}
-              style={{ marginRight: "8px", fontFamily: "Outfit" }}
-            />
-            LinkedIn
-          </a>
-
-          <a
-            href="tel:+918884859483"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              textDecoration: "none",
-              color: "black",
-            }}
-          >
-            <FaPhone
-              size={25}
-              style={{ marginRight: "8px", fontFamily: "Outfit" }}
-            />
-            +91 88848 59483
-          </a>
-
+            <div className="mb-4 flex items-center justify-between">
+              <span className="text-sm font-semibold tracking-wide text-gray-800">Quick Navigation</span>
+              <button aria-label="Close menu" onClick={closeMenu} className="grid h-9 w-9 place-items-center rounded-md bg-gray-100 text-gray-700 transition hover:bg-gray-200">
+                <FaTimes />
+              </button>
+            </div>
+            <ul className="space-y-2">
+              {navItems.map(({ label, href, Icon }) => {
+                const isActive = activeHash === href;
+                return (
+                  <li key={href}>
+                    <a
+                      href={href}
+                      onClick={() => {
+                        setActiveHash(href);
+                        closeMenu();
+                      }}
+                      className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ring-1 ring-transparent hover:bg-gray-50 hover:text-gray-900 ${
+                        isActive ? "bg-violet-50 text-violet-700 ring-violet-200" : "text-gray-700"
+                      }`}
+                    >
+                      <span className={`grid h-8 w-8 place-items-center rounded-lg ${
+                        isActive ? "bg-violet-100 text-violet-700" : "bg-gray-100 text-gray-600"
+                      }`}>
+                        <Icon size={16} />
+                      </span>
+                      <span className="truncate">{label}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </motion.nav>
+        </div>
+      )}
+      {/* Hero */}
+      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pt-24 pb-16 text-center">
+        <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-white/60 px-4 py-2 shadow-sm ring-1 ring-black/5 backdrop-blur">
+          <span className="text-violet-600">⚙</span>
+          <span className="text-sm font-medium text-gray-700">Full Stack Ninja | Business Analyst Graduate</span>
+        </div>
+        <h1 className="mt-8 text-5xl font-extrabold leading-tight tracking-tight text-gray-900 md:text-7xl">
+          Hi, I'm <span className="bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">Vinay Mansabdar</span>
+        </h1>
+        <p className="mx-auto mt-6 max-w-3xl text-xl leading-relaxed text-gray-600 font-montserrat">
+          Transforming <span className="text-purple-600 font-semibold">ideas into seamless digital experiences</span> through cutting-edge web technologies and analytics
+        </p>
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <a
             href="mailto:vmansabdar77@gmail.com"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              textDecoration: "none",
-              color: "black",
-            }}
+            className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-6 py-3 font-semibold text-white shadow-lg shadow-purple-600/30 transition hover:-translate-y-0.5 hover:bg-purple-700"
           >
-            <FaEnvelope
-              size={25}
-              style={{ marginRight: "8px", fontFamily: "Outfit" }}
-            />
-            vmansabdar77@gmail.com
+            <FaEnvelope /> Get In Touch
+          </a>
+          <a
+            href="#projects"
+            className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold text-gray-800 shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:bg-gray-50"
+          >
+            <FaLaptop /> View Projects
           </a>
         </div>
-      </motion.div>
+        <div className="mt-12 flex items-center justify-center gap-6">
+          <a href="https://github.com/VinayMansa?tab=repositories" target="_blank" rel="noreferrer" className="grid h-12 w-12 place-items-center rounded-full bg-white text-gray-800 shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:text-black">
+            <FaGithub size={22} />
+          </a>
+          <a href="https://www.linkedin.com/in/vinay-mansabdar-874b38226" target="_blank" rel="noreferrer" className="grid h-12 w-12 place-items-center rounded-full bg-white text-sky-700 shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5">
+            <FaLinkedin size={22} />
+          </a>
+          <a href="tel:+918884859483" className="grid h-12 w-12 place-items-center rounded-full bg-white text-gray-800 shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5">
+            <FaPhone size={22} />
+          </a>
+        </div>
+
+        {/* Mouse scroll indicator */}
+        <div className="pointer-events-none absolute left-1/2 top-[calc(100%+10px)] -translate-x-1/2">
+          <div className="mx-auto h-10 w-6 rounded-full border-2 border-purple-400/60 p-1">
+            <div className="h-2 w-2 animate-bounce rounded-full bg-purple-600"></div>
+          </div>
+        </div>
+      </section>
 
       {/* About Me Section */}
       <motion.div
@@ -282,7 +218,6 @@ const Homepage = () => {
           marginBottom: "120px",
           padding: "20px",
           marginTop: "5%",
-          marginLeft: "200px", // Adjust for sidebar
         }}
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
@@ -294,9 +229,10 @@ const Homepage = () => {
             fontFamily: "Outfit",
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             textAlign: "center",
-            textDecoration: "underline", // Underline the text
-            marginLeft: "33%",
+            textDecoration: "underline",
+            margin: "0 auto",
           }}
         >
           <FaUser style={{ marginRight: "0.5rem", textAlign: "center" }} />{" "}
@@ -310,27 +246,26 @@ const Homepage = () => {
             fontWeight: 500,
             fontSize: "24px",
             textAlign: "center",
-            marginLeft: "30px",
+            maxWidth: "900px",
+            margin: "20px auto 0",
           }}
         >
-          I am a highly motivated <br />
-          and detail-oriented Software Developer <br /> skilled in building
-          dynamic web applications using <br />
-          <span style={{ fontWeight: 800, color: "#e74c3c" }}>
-            MERN (MongoDB, Express.js, React, Node.js){" "}
-          </span>
-          stack.
+          I’m a Business Analytics enthusiast and Software Developer with expertise in building
+          scalable web applications using the <span style={{ fontWeight: 800, color: "#e74c3c" }}>MERN (MongoDB, Express.js, React, Node.js)</span> stack and applying
+          data-driven methodologies for smarter decision-making. Skilled in <span style={{ fontWeight: 800, color: "#e74c3c" }}>Python, SQL, BI tools,</span>
+          and modern web technologies, I focus on creating innovative, efficient, and impactful
+          digital solutions.
         </Typography>
       </motion.div>
 
-      {/* Skills Section */}
+      {/* Skills Section */
+      }
       <motion.div
         id="skills"
         style={{
           textAlign: "center",
           marginBottom: "30px",
           padding: "20px",
-          marginLeft: "200px", // Adjust for sidebar
         }}
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
@@ -342,40 +277,90 @@ const Homepage = () => {
             fontFamily: "Outfit",
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             textAlign: "center",
-            textDecoration: "underline", // Underline the text
-            marginLeft: "43%",
+            textDecoration: "underline",
+            margin: "0 auto",
           }}
         >
           <FaLaptop style={{ marginRight: "0.5rem", textAlign: "center" }} />{" "}
           Skills
         </Typography>
         <Container>
-          <Grid2 container spacing={8}>
-            {iconStyles.map(({ Icon, color }, index) => (
-              <Grid2 item xs={12} sm={4} key={index}>
-                {" "}
-                {/* Ensure 3 icons per row */}
+          {/* Development Stack */}
+          <Typography
+            variant="h6"
+            style={{
+              fontFamily: "Outfit",
+              marginTop: "24px",
+              color: "#4b5563",
+            }}
+          >
+            Development Stack
+          </Typography>
+          <Grid2 container spacing={4} style={{ marginTop: "8px" }}>
+            {devSkillIcons.map(({ Icon, color }, index) => (
+              <Grid2 item xs={6} sm={4} md={3} key={`dev-${index}`}>
                 <Card
                   className="hover-card"
                   style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                    boxShadow: "none",
-                    marginTop: "20px",
+                    backgroundColor: "rgba(255, 255, 255, 0.7)",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                    borderRadius: "16px",
                   }}
                 >
-                  {" "}
-                  {/* Transparent background */}
                   <CardContent
                     style={{
                       display: "flex",
+                      flexDirection: "column",
                       justifyContent: "center",
                       alignItems: "center",
-                      fontSize: "3rem",
-                      padding: "1.5rem",
+                      gap: "8px",
+                      fontSize: "2.25rem",
+                      padding: "1.25rem",
                     }}
                   >
-                    <Icon style={{ color }} /> {/* Apply the specific color */}
+                    <Icon style={{ color }} />
+                  </CardContent>
+                </Card>
+              </Grid2>
+            ))}
+          </Grid2>
+
+          {/* Business Analytics */}
+          <Typography
+            variant="h6"
+            style={{
+              fontFamily: "Outfit",
+              marginTop: "28px",
+              color: "#4b5563",
+            }}
+          >
+            Business Analytics
+          </Typography>
+          <Grid2 container spacing={4} style={{ marginTop: "8px" }}>
+            {analyticsSkillIcons.map(({ Icon, color }, index) => (
+              <Grid2 item xs={6} sm={4} md={3} key={`ba-${index}`}>
+                <Card
+                  className="hover-card"
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.7)",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                    borderRadius: "16px",
+                  }}
+                >
+                  <CardContent
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      gap: "8px",
+                      fontSize: "2.25rem",
+                      padding: "1.25rem",
+                    }}
+                  >
+                    <Icon style={{ color }} />
                   </CardContent>
                 </Card>
               </Grid2>
@@ -392,7 +377,6 @@ const Homepage = () => {
           marginBottom: "50px",
           padding: "20px",
           width: "100%",
-          marginLeft: "200px", // Adjust for sidebar
         }}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -484,7 +468,6 @@ const Homepage = () => {
           marginBottom: "50px",
           padding: "20px",
           width: "100%",
-          marginLeft: "200px", // Adjust for sidebar
         }}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
