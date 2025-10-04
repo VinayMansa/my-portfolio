@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { Typography, Card, CardContent, Grid2, Container } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import {
+  Typography,
+  Card,
+  CardContent,
+  Container,
+  Tooltip,
+  Grid as Grid2, // If you prefer the unstable Grid2 import, change to: import Grid2 from '@mui/material/Unstable_Grid2';
+} from "@mui/material";
 import {
   FaGithub,
   FaLinkedin,
@@ -13,17 +20,18 @@ import {
   FaBars,
   FaTimes,
   FaTrophy,
+  FaChartBar,
+  FaChartLine,
 } from "react-icons/fa";
 import {
   SiMongodb,
   SiExpress,
   SiPostman,
-  // SiPowerbi,
+  SiFirebase,
   SiTableau,
   SiPython,
   SiPandas,
   SiNumpy,
-  SiScikitlearn,
   SiMysql,
 } from "react-icons/si";
 import { motion } from "framer-motion";
@@ -32,96 +40,154 @@ import "@fontsource/montserrat";
 import "./styles.css";
 
 const devSkillIcons = [
-  { Icon: SiMongodb, color: "#4DB33D" },
-  { Icon: SiExpress, color: "#000000" },
-  { Icon: FaReact, color: "#61DBFB" },
-  { Icon: FaNodeJs, color: "#3C873A" },
-  { Icon: FaCss3Alt, color: "#264de4" },
-  { Icon: SiPostman, color: "#FF6C37" },
+  { Icon: SiMongodb, color: "#4DB33D", name: "MongoDB" },
+  { Icon: SiExpress, color: "#000000", name: "Express.js" },
+  { Icon: FaReact, color: "#61DBFB", name: "React" },
+  { Icon: FaNodeJs, color: "#3C873A", name: "Node.js" },
+  { Icon: FaCss3Alt, color: "#264de4", name: "CSS3" },
+  { Icon: SiPostman, color: "#FF6C37", name: "Postman" },
+  { Icon: SiFirebase, color: "#FFCA28", name: "Firebase" },
 ];
 
 const analyticsSkillIcons = [
-  // { Icon: SiPowerbi, color: "#F2C811" },
-  { Icon: SiTableau, color: "#E97627" },
-  { Icon: SiPython, color: "#3776AB" },
-  { Icon: SiPandas, color: "#150458" },
-  { Icon: SiNumpy, color: "#013243" },
-  { Icon: SiScikitlearn, color: "#F7931E" },
-  { Icon: SiMysql, color: "#00758F" },
+  { Icon: FaChartBar, color: "#F2C811", name: "Power BI" },
+  { Icon: SiTableau, color: "#E97627", name: "Tableau" },
+  { Icon: SiPython, color: "#3776AB", name: "Python" },
+  { Icon: SiPandas, color: "#150458", name: "Pandas" },
+  { Icon: SiNumpy, color: "#013243", name: "NumPy" },
+  { Icon: FaChartLine, color: "#F7931E", name: "Matplotlib" },
+  { Icon: SiMysql, color: "#00758F", name: "MySQL" },
 ];
 
-// Enable smooth scrolling
-document.documentElement.style.scrollBehavior = "smooth";
+// Enable smooth scrolling safely (guard for SSR)
+if (typeof document !== "undefined") {
+  document.documentElement.style.scrollBehavior = "smooth";
+}
 
 const Homepage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeHash, setActiveHash] = useState(typeof window !== "undefined" && window.location?.hash ? window.location.hash : "#about");
+  const [activeHash, setActiveHash] = useState(
+    typeof window !== "undefined" && window.location?.hash
+      ? window.location.hash
+      : "#about"
+  );
+
+  useEffect(() => {
+    const onHashChange = () => {
+      setActiveHash(window.location.hash || "#about");
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
   const closeMenu = () => setIsMenuOpen(false);
+
   const navItems = [
     { label: "About", href: "#about", Icon: FaUser },
     { label: "Skills", href: "#skills", Icon: FaReact },
     { label: "Projects", href: "#projects", Icon: FaLaptop },
     { label: "Achievements", href: "#achievements", Icon: FaTrophy },
   ];
+
   const projects = [
     {
       name: "Credit Score Management System",
+      // image: "https://via.placeholder.com/1200x600?text=Credit+Score+System", // replace with your image
       description: (
         <>
-          The Credit Score Management System is a web-based platform developed
-          using <span style={{ fontSize: "18px", color: "black" }}>React</span>{" "}
-          that allows both students and parents to track a student's academic
-          and non-academic performance. The system assigns credits based on
-          various parameters such as punctuality, task completion, and overall
-          discipline. Students can redeem their accumulated credits for exciting
-          rewards such as amusement park tickets, food coupons, and toys,
-          fostering motivation and engagement in their daily activities.,
+          A web platform developed using{" "}
+          <span style={{ fontSize: "23px", color: "#60a5fa" }}>React</span> that
+          allows students and parents to track academic & non-academic
+          performance. Credits are awarded for punctuality, task completion and
+          redeemed for rewards to increase motivation.
         </>
       ),
       features: [
         "User Authentication & Role-Based Access",
         "Performance Tracking & Credit Allocation",
-        "Reward System",
+        "Reward Redemption System",
         "Real-Time Dashboard & Reports",
       ],
     },
     {
       name: "Task Buddy",
+      // image: "https://via.placeholder.com/1200x600?text=Task+Buddy", // replace with your image
       description: (
         <>
           A responsive task management application using{" "}
-          <span style={{ fontSize: "18px", color: "black" }}> MERN </span>that
-          empowers users to efficiently create, organize, and track their tasks.
-          The application should feature user authentication via Firebase,
-          allowing users to sign in with Google. Users should be able to create,
-          edit, and delete tasks, categorize them (e.g., work, personal), and
-          set due dates. Additionally, implement drag-and-drop functionality for
-          task organization, sorting options based on due dates, and a
-          board/list view to enhance user experience.`,
+          <span style={{ fontSize: "23px", color: "#60a5fa" }}>MERN</span> stack
+          and Firebase auth. Create, edit, categorize, and organize tasks with
+          drag-and-drop and board/list views.
         </>
       ),
       features: [
-        "User Authentication[Firebase Google Provider]",
-        "Task Management",
-        "Filter and Search Options",
-        "Board/List View[Like Kanban]",
+        "Google Authentication (Firebase)",
+        "Task Creation & Categorisation",
+        "Drag & Drop Kanban Board",
+        "Search, Filter & Sort",
+      ],
+    },
+    {
+      name: "Movies Application",
+      // image: "https://via.placeholder.com/1200x600?text=Movies+Application", // replace with your image
+      description: (
+        <>
+          Movie discovery & management app built with{" "}
+          <span style={{ fontSize: "28px", color: "#" }}>React & Node.js</span>,
+          integrating external APIs for ratings and personalized
+          recommendations.
+        </>
+      ),
+      features: [
+        "Movie Search & Discovery",
+        "User Watchlists & Favorites",
+        "Ratings & Reviews",
+        "Personalized Recommendations",
       ],
     },
   ];
+
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-b from-[#F5F0FF] to-[#EDE7FF] flex flex-col items-center">
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-slate-700 via-blue-650 to-indigo-700 flex flex-col items-center">
+      {/* Tech Grid Background */}
+      <div className="absolute inset-0 opacity-15" aria-hidden>
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(99, 102, 241, 0.15) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(99, 102, 241, 0.15) 1px, transparent 1px)
+            `,
+            backgroundSize: "50px 50px",
+          }}
+        ></div>
+        <div
+          className="absolute top-0 left-0 w-full h-full"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 50%)
+            `,
+          }}
+        />
+      </div>
+
       {/* Top-right hamburger */}
       <button
         aria-label="Open menu"
         onClick={() => setIsMenuOpen(true)}
-        className="fixed right-5 top-5 z-20 grid h-11 w-11 place-items-center rounded-lg bg-white/80 text-gray-800 shadow-sm ring-1 ring-black/5 backdrop-blur transition hover:bg-white"
+        className="fixed right-5 top-5 z-20 grid h-11 w-11 place-items-center rounded-lg bg-white/20 text-white shadow-lg ring-1 ring-white/30 backdrop-blur transition hover:bg-white/30"
       >
         <FaBars />
       </button>
 
       {/* Overlay Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm" onClick={closeMenu}>
+        <div
+          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm"
+          onClick={closeMenu}
+        >
           <motion.nav
             initial={{ opacity: 0, x: 24, scale: 0.98 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -130,8 +196,14 @@ const Homepage = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">
-              <span className="text-sm font-semibold tracking-wide text-gray-800">Quick Navigation</span>
-              <button aria-label="Close menu" onClick={closeMenu} className="grid h-9 w-9 place-items-center rounded-md bg-gray-100 text-gray-700 transition hover:bg-gray-200">
+              <span className="text-sm font-semibold tracking-wide text-gray-800">
+                Quick Navigation
+              </span>
+              <button
+                aria-label="Close menu"
+                onClick={closeMenu}
+                className="grid h-9 w-9 place-items-center rounded-md bg-gray-100 text-gray-700 transition hover:bg-gray-200"
+              >
                 <FaTimes />
               </button>
             </div>
@@ -147,12 +219,16 @@ const Homepage = () => {
                         closeMenu();
                       }}
                       className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ring-1 ring-transparent hover:bg-gray-50 hover:text-gray-900 ${
-                        isActive ? "bg-violet-50 text-violet-700 ring-violet-200" : "text-gray-700"
+                        isActive
+                          ? "bg-violet-50 text-violet-700 ring-violet-200"
+                          : "text-gray-700"
                       }`}
                     >
-                      <span className={`grid h-8 w-8 place-items-center rounded-lg ${
-                        isActive ? "bg-violet-100 text-violet-700" : "bg-gray-100 text-gray-600"
-                      }`}>
+                      <span
+                        className={`grid h-8 w-8 place-items-center rounded-lg ${
+                          isActive ? "bg-violet-100 text-violet-700" : "bg-gray-100 text-gray-600"
+                        }`}
+                      >
                         <Icon size={16} />
                       </span>
                       <span className="truncate">{label}</span>
@@ -164,48 +240,73 @@ const Homepage = () => {
           </motion.nav>
         </div>
       )}
+
       {/* Hero */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pt-24 pb-16 text-center">
-        <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-white/60 px-4 py-2 shadow-sm ring-1 ring-black/5 backdrop-blur">
-          <span className="text-violet-600">⚙</span>
-          <span className="text-sm font-medium text-gray-700">Full Stack Ninja | Business Analyst Graduate</span>
+        <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 shadow-lg ring-1 ring-white/30 backdrop-blur">
+          <span className="text-blue-300">⚙</span>
+          <span className="text-md font-medium text-white montserrat">
+            Full Stack Ninja | Business Analyst Graduate
+          </span>
         </div>
-        <h1 className="mt-8 text-5xl font-extrabold leading-tight tracking-tight text-gray-900 md:text-7xl">
-          Hi, I'm <span className="bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">Vinay Mansabdar</span>
+
+        <h1 className="mt-8 text-5xl font-extrabold leading-tight tracking-tight text-white md:text-6xl">
+          Hi, I'm{" "}
+          <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            Vinay Mansabdar
+          </span>
         </h1>
-        <p className="mx-auto mt-6 max-w-3xl text-xl leading-relaxed text-gray-600 font-montserrat">
-          Transforming <span className="text-purple-600 font-semibold">ideas into seamless digital experiences</span> through cutting-edge web technologies and analytics
+
+        <p className="mx-auto mt-6 max-w-3xl text-xl leading-relaxed text-gray-200 montserrat">
+          Transforming{" "}
+          <span className="text-blue-400 font-semibold">ideas into seamless digital experiences</span>{" "}
+          through cutting-edge web technologies and analytics
         </p>
+
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <a
             href="mailto:vmansabdar77@gmail.com"
-            className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-6 py-3 font-semibold text-white shadow-lg shadow-purple-600/30 transition hover:-translate-y-0.5 hover:bg-purple-700"
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-3 font-semibold text-white shadow-lg shadow-blue-600/30 transition hover:-translate-y-0.5 hover:shadow-blue-600/50"
           >
             <FaEnvelope /> Get In Touch
           </a>
           <a
             href="#projects"
-            className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold text-gray-800 shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:bg-gray-50"
+            className="inline-flex items-center gap-2 rounded-xl bg-white/20 px-6 py-3 font-semibold text-white shadow-lg ring-1 ring-white/30 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/30"
           >
             <FaLaptop /> View Projects
           </a>
         </div>
+
         <div className="mt-12 flex items-center justify-center gap-6">
-          <a href="https://github.com/VinayMansa?tab=repositories" target="_blank" rel="noreferrer" className="grid h-12 w-12 place-items-center rounded-full bg-white text-gray-800 shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:text-black">
+          <a
+            href="https://github.com/VinayMansa?tab=repositories"
+            target="_blank"
+            rel="noreferrer"
+            className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white shadow-lg ring-1 ring-white/30 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/30"
+          >
             <FaGithub size={22} />
           </a>
-          <a href="https://www.linkedin.com/in/vinay-mansabdar-874b38226" target="_blank" rel="noreferrer" className="grid h-12 w-12 place-items-center rounded-full bg-white text-sky-700 shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5">
+          <a
+            href="https://www.linkedin.com/in/vinay-mansabdar-874b38226"
+            target="_blank"
+            rel="noreferrer"
+            className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-blue-300 shadow-lg ring-1 ring-white/30 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/30"
+          >
             <FaLinkedin size={22} />
           </a>
-          <a href="tel:+918884859483" className="grid h-12 w-12 place-items-center rounded-full bg-white text-gray-800 shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5">
+          <a
+            href="tel:+918884859483"
+            className="grid h-12 w-12 place-items-center rounded-full bg-white/20 text-white shadow-lg ring-1 ring-white/30 backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/30"
+          >
             <FaPhone size={22} />
           </a>
         </div>
 
         {/* Mouse scroll indicator */}
         <div className="pointer-events-none absolute left-1/2 top-[calc(100%+10px)] -translate-x-1/2">
-          <div className="mx-auto h-10 w-6 rounded-full border-2 border-purple-400/60 p-1">
-            <div className="h-2 w-2 animate-bounce rounded-full bg-purple-600"></div>
+          <div className="mx-auto h-10 w-6 rounded-full border-2 border-blue-400/60 p-1">
+            <div className="h-2 w-2 animate-bounce rounded-full bg-blue-400"></div>
           </div>
         </div>
       </section>
@@ -217,7 +318,8 @@ const Homepage = () => {
           textAlign: "center",
           marginBottom: "120px",
           padding: "20px",
-          marginTop: "5%",
+          marginTop: "10%",
+          width: "100%",
         }}
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
@@ -230,14 +332,12 @@ const Homepage = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            textAlign: "center",
             textDecoration: "underline",
             margin: "0 auto",
+            color: "white",
           }}
         >
-          <FaUser style={{ marginRight: "0.5rem", textAlign: "center" }} />{" "}
-          {/* Add the icon */}
-          About Me
+          <FaUser style={{ marginRight: "0.5rem", color: "#60a5fa" }} /> About Me
         </Typography>
         <Typography
           style={{
@@ -248,24 +348,25 @@ const Homepage = () => {
             textAlign: "center",
             maxWidth: "900px",
             margin: "20px auto 0",
+            color: "#e5e7eb",
           }}
         >
-          I’m a Business Analytics enthusiast and Software Developer with expertise in building
-          scalable web applications using the <span style={{ fontWeight: 800, color: "#e74c3c" }}>MERN (MongoDB, Express.js, React, Node.js)</span> stack and applying
-          data-driven methodologies for smarter decision-making. Skilled in <span style={{ fontWeight: 800, color: "#e74c3c" }}>Python, SQL, BI tools,</span>
-          and modern web technologies, I focus on creating innovative, efficient, and impactful
-          digital solutions.
+          I'm a Business Analytics enthusiast and Software Developer with expertise in building
+          scalable web applications using the{" "}
+          <span style={{ fontWeight: 800, color: "#60a5fa" }}>MERN (MongoDB, Express.js, React, Node.js)</span>{" "}
+          stack and applying data-driven methodologies for smarter decision-making. Skilled in{" "}
+          <span style={{ fontWeight: 800, color: "#60a5fa" }}>Python, SQL, BI tools,</span> and modern web technologies.
         </Typography>
       </motion.div>
 
-      {/* Skills Section */
-      }
+      {/* Skills Section */}
       <motion.div
         id="skills"
         style={{
           textAlign: "center",
           marginBottom: "30px",
           padding: "20px",
+          width: "100%",
         }}
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
@@ -278,98 +379,132 @@ const Homepage = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            textAlign: "center",
             textDecoration: "underline",
             margin: "0 auto",
+            color: "white",
+            marginBottom: "18px",
           }}
         >
-          <FaLaptop style={{ marginRight: "0.5rem", textAlign: "center" }} />{" "}
-          Skills
+          <FaLaptop style={{ marginRight: "0.5rem", color: "#60a5fa" }} /> Skills
         </Typography>
-        <Container>
+
+        <Container style={{ maxWidth: "1100px" }}>
           {/* Development Stack */}
           <Typography
-            variant="h6"
+            variant="h5"
             style={{
               fontFamily: "Outfit",
-              marginTop: "24px",
-              color: "#4b5563",
+              marginTop: "8px",
+              marginBottom: "12px",
+              color: "#e5e7eb",
+              fontWeight: 600,
             }}
           >
             Development Stack
           </Typography>
-          <Grid2 container spacing={4} style={{ marginTop: "8px" }}>
-            {devSkillIcons.map(({ Icon, color }, index) => (
+
+          <Grid2 container spacing={4}>
+            {devSkillIcons.map(({ Icon, color, name }, index) => (
               <Grid2 item xs={6} sm={4} md={3} key={`dev-${index}`}>
-                <Card
-                  className="hover-card"
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.7)",
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-                    borderRadius: "16px",
-                  }}
-                >
-                  <CardContent
+                <Tooltip title={name} arrow placement="top">
+                  <Card
+                    className="hover-card"
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      gap: "8px",
-                      fontSize: "2.25rem",
-                      padding: "1.25rem",
+                      backgroundColor: "rgba(255, 255, 255, 0.06)",
+                      borderRadius: "14px",
+                      minHeight: "120px",
+                      border: "1px solid rgba(255, 255, 255, 0.06)",
+                      backdropFilter: "blur(6px)",
                     }}
                   >
-                    <Icon style={{ color }} />
-                  </CardContent>
-                </Card>
+                    <CardContent
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: "8px",
+                        fontSize: "2.4rem",
+                        padding: "1.5rem",
+                        borderRadius: "12px",
+                      }}
+                    >
+                      <Icon
+                        style={{
+                          color,
+                          filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))",
+                        }}
+                        size={36}
+                      />
+                      <div style={{ color: "#d1d5db", marginTop: "8px", fontSize: "0.95rem" }}>
+                        {name}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Tooltip>
               </Grid2>
             ))}
           </Grid2>
 
           {/* Business Analytics */}
           <Typography
-            variant="h6"
+            variant="h5"
             style={{
               fontFamily: "Outfit",
-              marginTop: "28px",
-              color: "#4b5563",
+              marginTop: "32px",
+              marginBottom: "12px",
+              color: "#e5e7eb",
+              fontWeight: 600,
             }}
           >
             Business Analytics
           </Typography>
-          <Grid2 container spacing={4} style={{ marginTop: "8px" }}>
-            {analyticsSkillIcons.map(({ Icon, color }, index) => (
+          <Grid2 container spacing={4}>
+            {analyticsSkillIcons.map(({ Icon, color, name }, index) => (
               <Grid2 item xs={6} sm={4} md={3} key={`ba-${index}`}>
-                <Card
-                  className="hover-card"
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.7)",
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-                    borderRadius: "16px",
-                  }}
-                >
-                  <CardContent
+                <Tooltip title={name} arrow placement="top">
+                  <Card
+                    className="hover-card"
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      gap: "8px",
-                      fontSize: "2.25rem",
-                      padding: "1.25rem",
+                      backgroundColor: "rgba(255, 255, 255, 0.06)",
+                      borderRadius: "14px",
+                      minHeight: "120px",
+                      border: "1px solid rgba(255, 255, 255, 0.06)",
+                      backdropFilter: "blur(6px)",
                     }}
                   >
-                    <Icon style={{ color }} />
-                  </CardContent>
-                </Card>
+                    <CardContent
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: "8px",
+                        fontSize: "2.4rem",
+                        padding: "1.5rem",
+                        borderRadius: "12px",
+                      }}
+                    >
+                      <Icon
+                        style={{
+                          color,
+                          filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))",
+                        }}
+                        size={36}
+                      />
+                      <div style={{ color: "#d1d5db", marginTop: "8px", fontSize: "0.95rem" }}>
+                        {name}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Tooltip>
               </Grid2>
             ))}
           </Grid2>
         </Container>
       </motion.div>
 
-      {/* Projects Section */}
+      {/* Projects Section - centered cards with images and larger text */}
       <motion.div
         id="projects"
         style={{
@@ -382,81 +517,116 @@ const Homepage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
       >
-        <Typography variant="h4" style={{ fontFamily: "Outfit" }}>
+        <Typography
+          variant="h4"
+          style={{
+            fontFamily: "Outfit",
+            color: "white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            textDecoration: "underline",
+            margin: "0 auto 30px",
+          }}
+        >
+          <FaLaptop style={{ marginRight: "0.5rem", color: "#60a5fa" }} />
           Projects
         </Typography>
-        <Container>
-          <Grid2
-            container
-            spacing={3}
-            justifyContent="center"
-            style={{ marginTop: "20px" }}
-          >
+
+        <Container style={{ maxWidth: "1100px" }}>
+          <div className="flex flex-col items-center gap-10">
             {projects.map((project, index) => (
-              <Grid2 item xs={12} sm={6} key={index}>
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Card
-                    className="shadow-lg"
-                    style={{
-                      padding: "20px",
-                      border: "1px solid #ddd",
-                      borderRadius: "8px",
-                      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                      marginBottom: "20px",
-                      width: "65%",
-                      height: "20rem",
-                      marginLeft: "15%",
-                    }}
-                  >
-                    <CardContent>
-                      <Typography
-                        variant="h5"
-                        style={{
-                          color: "#1e3a8a", // Tailwind's text-blue-600 equivalent
-                          marginBottom: "10px",
-                          fontFamily: "Outfit",
-                        }}
-                      >
-                        {project.name}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        style={{
-                          color: "#4b5563", // Tailwind's text-gray-700 equivalent
-                          lineHeight: "1.6",
-                          fontFamily: "Outfit",
-                        }}
-                      >
-                        {project.description}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        style={{
-                          color: "#4b5563",
-                          marginTop: "10px",
-                          fontWeight: "bold",
-                          fontFamily: "Outfit",
-                        }}
-                      >
-                        Key Features:
-                      </Typography>
-                      <ul
-                        style={{
-                          paddingLeft: "20px",
-                          color: "#4b5563",
-                          fontFamily: "Outfit",
-                        }}
-                      >
-                        {project.features.map((feature, i) => (
-                          <li key={i}>{feature}</li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </Grid2>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                key={index}
+                style={{ width: "100%", maxWidth: "900px" }}
+              >
+                <Card
+                  className="shadow-lg"
+                  style={{
+                    padding: "20px",
+                    borderRadius: "16px",
+                    boxShadow:
+                      "0 10px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03)",
+                    backgroundColor: "rgba(255, 255, 255, 0.04)",
+                    backdropFilter: "blur(8px)",
+                  }}
+                >
+                  {project.image && (
+                    <img
+                      src={project.image}
+                      alt={`${project.name} screenshot`}
+                      style={{
+                        width: "100%",
+                        height: "260px",
+                        objectFit: "cover",
+                        borderRadius: "12px",
+                        marginBottom: "16px",
+                      }}
+                    />
+                  )}
+
+                  <CardContent>
+                    <Typography
+                      variant="h5"
+                      style={{
+                        color: "#e5e7eb",
+                        marginBottom: "12px",
+                        fontFamily: "Outfit",
+                        fontWeight: 700,
+                        fontSize: "1.45rem",
+                      }}
+                    >
+                      {project.name}
+                    </Typography>
+
+                    <Typography
+                      variant="body1"
+                      style={{
+                        color: "#e5e7eb",
+                        lineHeight: "1.8",
+                        fontFamily: "Outfit",
+                        fontSize: "1.05rem",
+                        marginBottom: "12px",
+                        textAlign: "left",
+                      }}
+                    >
+                      {project.description}
+                    </Typography>
+
+                    <Typography
+                      variant="body2"
+                      style={{
+                        color: "#fbbf24",
+                        fontWeight: 700,
+                        fontFamily: "Outfit",
+                        fontSize: "1rem",
+                        marginBottom: "8px",
+                        textAlign: "left",
+                      }}
+                    >
+                      Key Features:
+                    </Typography>
+
+                    <ul
+                      style={{
+                        paddingLeft: "20px",
+                        color: "#d1d5db",
+                        fontFamily: "Outfit",
+                        fontSize: "1rem",
+                        lineHeight: "1.7",
+                        textAlign: "left",
+                      }}
+                    >
+                      {project.features.map((feature, i) => (
+                        <li key={i}>{feature}</li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </Grid2>
+          </div>
         </Container>
       </motion.div>
 
@@ -473,22 +643,64 @@ const Homepage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
       >
-        <Typography variant="h4" style={{ fontFamily: "Outfit" }}>
+        <Typography
+          variant="h4"
+          style={{
+            fontFamily: "Outfit",
+            color: "white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            textDecoration: "underline",
+            margin: "0 auto",
+          }}
+        >
+          <FaTrophy style={{ marginRight: "0.5rem", color: "#fbbf24" }} />
           Achievements
         </Typography>
+
         <Container>
-          <Typography
+          <Card
             style={{
               marginTop: "20px",
-              fontFamily: "Outfit",
-              fontSize: "22px",
-              color: "#1e3a8a",
+              padding: "24px",
+              borderRadius: "16px",
+              boxShadow: "0 8px 25px rgba(0,0,0,0.4)",
+              backgroundColor: "rgba(255, 255, 255, 0.03)",
+              backdropFilter: "blur(8px)",
+              maxWidth: "800px",
+              margin: "20px auto 0",
             }}
           >
-            Receieved best innovation for project Vision based <br />
-            parking slot detection based on Mask R-CNN for Engineering Final
-            Project
-          </Typography>
+            <CardContent>
+              <Typography
+                style={{
+                  fontFamily: "Outfit",
+                  fontSize: "20px",
+                  color: "#fbbf24",
+                  fontWeight: 700,
+                  textAlign: "center",
+                  lineHeight: "1.6",
+                }}
+              >
+                🏆 Best Innovation Award
+              </Typography>
+
+              <Typography
+                style={{
+                  marginTop: "12px",
+                  fontFamily: "Outfit",
+                  fontSize: "18px",
+                  color: "#e5e7eb",
+                  textAlign: "center",
+                  lineHeight: "1.6",
+                }}
+              >
+                Received Best Innovation Award for "Vision-based Parking Slot Detection"
+                using Mask R-CNN for Engineering Final Project.
+              </Typography>
+            </CardContent>
+          </Card>
         </Container>
       </motion.div>
     </div>
