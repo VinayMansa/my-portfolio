@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   Container,
-  Tooltip,
   Grid as Grid2, // If you prefer the unstable Grid2 import, change to: import Grid2 from '@mui/material/Unstable_Grid2';
 } from "@mui/material";
 import {
@@ -312,18 +311,9 @@ const Homepage = () => {
       </section>
 
       {/* About Me Section */}
-      <motion.div
+      <div
         id="about"
-        style={{
-          textAlign: "center",
-          marginBottom: "120px",
-          padding: "20px",
-          marginTop: "10%",
-          width: "100%",
-        }}
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
+        style={{ textAlign: "center", marginBottom: "120px", padding: "20px", marginTop: "10%", width: "100%" }}
       >
         <Typography
           variant="h4"
@@ -357,20 +347,12 @@ const Homepage = () => {
           stack and applying data-driven methodologies for smarter decision-making. Skilled in{" "}
           <span style={{ fontWeight: 800, color: "#60a5fa" }}>Python, SQL, BI tools,</span> and modern web technologies.
         </Typography>
-      </motion.div>
+      </div>
 
       {/* Skills Section */}
-      <motion.div
+      <div
         id="skills"
-        style={{
-          textAlign: "center",
-          marginBottom: "30px",
-          padding: "20px",
-          width: "100%",
-        }}
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
+        style={{ textAlign: "center", marginBottom: "30px", padding: "20px", width: "100%" }}
       >
         <Typography
           variant="h4"
@@ -406,42 +388,12 @@ const Homepage = () => {
           <Grid2 container spacing={4}>
             {devSkillIcons.map(({ Icon, color, name }, index) => (
               <Grid2 item xs={6} sm={4} md={3} key={`dev-${index}`}>
-                <Tooltip title={name} arrow placement="top">
-                  <Card
-                    className="hover-card"
-                    style={{
-                      backgroundColor: "rgba(255, 255, 255, 0.06)",
-                      borderRadius: "14px",
-                      minHeight: "120px",
-                      border: "1px solid rgba(255, 255, 255, 0.06)",
-                      backdropFilter: "blur(6px)",
-                    }}
-                  >
-                    <CardContent
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        gap: "8px",
-                        fontSize: "2.4rem",
-                        padding: "1.5rem",
-                        borderRadius: "12px",
-                      }}
-                    >
-                      <Icon
-                        style={{
-                          color,
-                          filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))",
-                        }}
-                        size={36}
-                      />
-                      <div style={{ color: "#d1d5db", marginTop: "8px", fontSize: "0.95rem" }}>
-                        {name}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Tooltip>
+                <Card className="hover-card" style={{ backgroundColor: "rgba(255, 255, 255, 0.06)", borderRadius: "14px", minHeight: "120px", border: "1px solid rgba(255, 255, 255, 0.06)", backdropFilter: "blur(6px)" }}>
+                  <CardContent style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "8px", fontSize: "2.4rem", padding: "1.5rem", borderRadius: "12px" }}>
+                    <Icon style={{ color, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))" }} size={36} />
+                    <div style={{ color: "#d1d5db", marginTop: "8px", fontSize: "0.95rem" }}>{name}</div>
+                  </CardContent>
+                </Card>
               </Grid2>
             ))}
           </Grid2>
@@ -462,60 +414,22 @@ const Homepage = () => {
           <Grid2 container spacing={4}>
             {analyticsSkillIcons.map(({ Icon, color, name }, index) => (
               <Grid2 item xs={6} sm={4} md={3} key={`ba-${index}`}>
-                <Tooltip title={name} arrow placement="top">
-                  <Card
-                    className="hover-card"
-                    style={{
-                      backgroundColor: "rgba(255, 255, 255, 0.06)",
-                      borderRadius: "14px",
-                      minHeight: "120px",
-                      border: "1px solid rgba(255, 255, 255, 0.06)",
-                      backdropFilter: "blur(6px)",
-                    }}
-                  >
-                    <CardContent
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        gap: "8px",
-                        fontSize: "2.4rem",
-                        padding: "1.5rem",
-                        borderRadius: "12px",
-                      }}
-                    >
-                      <Icon
-                        style={{
-                          color,
-                          filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))",
-                        }}
-                        size={36}
-                      />
-                      <div style={{ color: "#d1d5db", marginTop: "8px", fontSize: "0.95rem" }}>
-                        {name}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Tooltip>
+                <Card className="hover-card" style={{ backgroundColor: "rgba(255, 255, 255, 0.06)", borderRadius: "14px", minHeight: "120px", border: "1px solid rgba(255, 255, 255, 0.06)", backdropFilter: "blur(6px)" }}>
+                  <CardContent style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "8px", fontSize: "2.4rem", padding: "1.5rem", borderRadius: "12px" }}>
+                    <Icon style={{ color, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))" }} size={36} />
+                    <div style={{ color: "#d1d5db", marginTop: "8px", fontSize: "0.95rem" }}>{name}</div>
+                  </CardContent>
+                </Card>
               </Grid2>
             ))}
           </Grid2>
         </Container>
-      </motion.div>
+      </div>
 
       {/* Projects Section - centered cards with images and larger text */}
-      <motion.div
+      <div
         id="projects"
-        style={{
-          textAlign: "center",
-          marginBottom: "50px",
-          padding: "20px",
-          width: "100%",
-        }}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.4 }}
+        style={{ textAlign: "center", marginBottom: "50px", padding: "20px", width: "100%" }}
       >
         <Typography
           variant="h4"
@@ -628,20 +542,12 @@ const Homepage = () => {
             ))}
           </div>
         </Container>
-      </motion.div>
+      </div>
 
       {/* Achievements Section */}
-      <motion.div
+      <div
         id="achievements"
-        style={{
-          textAlign: "center",
-          marginBottom: "50px",
-          padding: "20px",
-          width: "100%",
-        }}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.4 }}
+        style={{ textAlign: "center", marginBottom: "50px", padding: "20px", width: "100%" }}
       >
         <Typography
           variant="h4"
@@ -696,13 +602,20 @@ const Homepage = () => {
                   lineHeight: "1.6",
                 }}
               >
-                Received Best Innovation Award for "Vision-based Parking Slot Detection"
+                Received Best Innovation Award from Karnataka State Council for Science and Technology for "Vision-based Parking Slot Detection"
                 using Mask R-CNN for Engineering Final Project.
               </Typography>
             </CardContent>
           </Card>
         </Container>
-      </motion.div>
+      </div>
+
+      {/* Footer */}
+      <footer className="w-full py-5 mt-auto flex justify-center items-center bg-transparent">
+        <span className="text-gray-300 text-md flex items-center gap-2 font-mono">
+          Made with <span className="text-red-400 text-lg">❤️</span> in <FaReact className="inline-block text-blue-400 ml-1" /> React
+        </span>
+      </footer>
     </div>
   );
 };
